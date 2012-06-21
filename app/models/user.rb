@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   has_many :microposts
   has_secure_password
   
+  before_save { |user| user.name = name.downcase } 
   before_save { |user| user.email = email.downcase } #ensures uniqueness together with other criteria
+  before_save :create_remember_token
   
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -12,4 +14,9 @@ class User < ActiveRecord::Base
   
   validates :password, presence: true, length: { minimum: 5 }
   validates :password_confirmation, presence: true
+  
+  private
+    def create_remember_token
+      self.remember_token = SecureRandom.urlsafe_base64
+    end
 end
