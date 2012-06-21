@@ -18,13 +18,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
       else
         format.html { render action: "new" }
-      end
-    
+      end    
   end
   
   def update
@@ -40,7 +38,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-  format.html { redirect_to users_url }
+    #format.html { redirect_to users_url }
 
   end
 end
