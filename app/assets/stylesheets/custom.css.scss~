@@ -30,7 +30,7 @@ textarea
   margin-right: 10px;
   font-size: 1.7em;
   color: #fff;
-  text-transform: lowercase;
+  text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
@@ -40,4 +40,9 @@ textarea
     color: #fff;
     text-decoration: none;
   }
+}
+
+.debug_dump
+{
+  margin-top: 50px;
 }
