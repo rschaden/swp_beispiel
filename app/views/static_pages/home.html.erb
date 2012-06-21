@@ -1,6 +1,13 @@
 <% provide(:title, 'Home') %>
-<h1>SWP-Beispiel Homepage</h1>
-<p>
-  This is the homepage for the sample app for my software-project.
-  Inspired by  <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-</p>
+<div class="center hero-unit">
+  <h1>SWP-Beispiel Homepage</h1>
+
+  <h2>
+    This is the homepage for the sample app for my software-project.
+    Inspired by  <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
+  </h2>
+
+  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+</div>
+
+
