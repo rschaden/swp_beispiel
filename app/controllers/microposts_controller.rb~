@@ -8,7 +8,7 @@ class MicropostsController < ApplicationController
       if @micropost.save
         redirect_to root_path, notice: 'Micropost was successfully created.'
       else
-        redirect_to user_path(current_user), notice: @micropost.errors.full_messages.join
+        redirect_to user_path(current_user), notice: @micropost.errors.full_messages.join('<br')
       end
   end
 
