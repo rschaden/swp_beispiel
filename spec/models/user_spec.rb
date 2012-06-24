@@ -12,8 +12,26 @@ describe User do
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:authenticate) }
+  it { should respond_to(:microposts) }
   
   it { should be_valid }
+  
+  describe "when name is not present" do
+    before { @user.name = " " }
+    it { should_not be_valid }
+  end
+  
+  describe "when name is too long" do
+    before { @user.name = "a" * 51 }
+    it { should_not be_valid }
+  end
+  
+  describe "when email is not present" do
+    before { @user.email = " " }
+    it { should_not be_valid }
+  end
+  
   
   describe "when email format is invalid" do
     it "should be invalid" do
@@ -54,6 +72,16 @@ describe User do
     it { should_not be_valid }
   end
   
+  describe "when password is not present" do
+    before { @user.password = @user.password_confirmation = " " }
+    it { should be_invalid }
+  end
+  
+  describe "when password is too short present" do
+    before { @user.password = @user.password_confirmation = "a" * 3 }
+    it { should_not be_valid }
+  end
+  
   describe "when password doesn't match confirmation" do
     before { @user.password_confirmation = "mismatch" }
     it { should_not be_valid }
@@ -68,10 +96,36 @@ describe User do
     end
     
     describe "with invalid password" do
-      let(:user_inv_password) { found_user.authenticate("invalid") }
-      
+      let(:user_inv_password) { found_user.authenticate("invalid") }      
       it { should_not == user_inv_password }
     end
   end
+  
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
+  end
+  
+  describe "micropost associations" do
     
+    before { @user.save }
+    let!(:older_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+    
+    it "should have the right microposts in the right order" do
+      @user.microposts.should == [newer_micropost, older_micropost]
+    end
+    
+    it "should destroy associated microposts" do
+      microposts = @user.microposts
+      @user.destroy
+      microposts.each do |micropost|
+        Micropost.find_by_id(micropost.id).should be_nil
+      end
+    end
+  end
 end

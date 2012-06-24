@@ -1,8 +1,13 @@
 FactoryGirl.define do
   factory :user do
-    name    "Rainer S"
-    email   "rainer@example.com"
+    name    "rainers"
+    email   "rain@example.com"
     password    "foobar"
     password_confirmation   "foobar"
+  end
+  
+  factory :micropost do
+    content "Lorem ipsum"
+    user
   end
 end
